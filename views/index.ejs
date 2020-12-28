@@ -1,87 +1,105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>hyofu</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/drop.css">
-  </head>
-  <style>
-   body{
-     text-align: center;
-     font-family: 'Roboto', sans-serif;
-   }
-   .logo{
-     height: 10%;
-     width: 10%;
-     cursor: default;
-   }
-   .title{
-     font-size: 20px;
-   }
-  </style>
-  <body>
-<a href="#"><img class="logo" src="/images/logo.png"></a><br>
-<span class="title">Hyofu file upload</span><br><br>
-<form action="/upload" method="post">
-<center>
-  <div class="drop-zone">
-    <span class="drop-zone__prompt">Drop file here or click to upload</span>
-    <input type="file" name="myFile" class="drop-zone__input">
-  </div>
-</center>
-</form>
-<script>
-document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
-  const dropZoneElement = inputElement.closest(".drop-zone");
-  dropZoneElement.addEventListener("click", (e) => {
-    inputElement.click();
-  });
-  inputElement.addEventListener("change", (e) => {
-    if (inputElement.files.length) {
-      updateThumbnail(dropZoneElement, inputElement.files[0]);
-    }
-  });
-  dropZoneElement.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZoneElement.classList.add("drop-zone--over");
-  });
-  ["dragleave", "dragend"].forEach((type) => {
-    dropZoneElement.addEventListener(type, (e) => {
-      dropZoneElement.classList.remove("drop-zone--over");
-    });
-  });
-  dropZoneElement.addEventListener("drop", (e) => {
-    e.preventDefault();
-    if (e.dataTransfer.files.length) {
-      inputElement.files = e.dataTransfer.files;
-      updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-    }
-    dropZoneElement.classList.remove("drop-zone--over");
-  });
-});
-function updateThumbnail(dropZoneElement, file) {
-  let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
-  if (dropZoneElement.querySelector(".drop-zone__prompt")) {
-    dropZoneElement.querySelector(".drop-zone__prompt").remove();
-  }
-  if (!thumbnailElement) {
-    thumbnailElement = document.createElement("div");
-    thumbnailElement.classList.add("drop-zone__thumb");
-    dropZoneElement.appendChild(thumbnailElement);
+
+<head>
+  <title>hyofu</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+<style>
+  body {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
   }
 
-  thumbnailElement.dataset.label = file.name;
-  if (file.type.startsWith("image/")) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-    };
-  } else {
-    thumbnailElement.style.backgroundImage = null;
+  .logo {
+    height: 10%;
+    width: 10%;
+    cursor: default;
   }
-}
-</script>
-  </body>
+
+  .title {
+    font-size: 20px;
+  }
+</style>
+
+<body>
+  <a href="#"><img class="logo" src="/images/logo.png"></a><br>
+  <span class="title">Hyofu file upload</span><br><br>
+  <form action="/upload" method="post" encType="multipart/form-data" class="dropzone">
+    <center>
+      <div style="width: 50%;">
+        <input type="file" name="file" class="upload">
+      </div>
+    </center>
+  </form>
+  <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+  <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+  <script>
+    $(() => {
+      $.fn.filepond.registerPlugin(FilePondPluginImagePreview);
+      $('.upload').filepond();
+      $.fn.filepond.setOptions({
+        server: {
+          process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+
+            const formData = new FormData();
+            formData.append(fieldName, file, file.name);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', './upload');
+
+            request.upload.onprogress = (e) => {
+              progress(e.lengthComptable, e.loaded, e.total);
+            };
+
+            request.onload = function () {
+              if (request.status >= 200 && request.status < 300) {
+                console.log(JSON.parse(request.responseText)["delete"])
+                load(JSON.parse(request.responseText)["delete"]);
+              } else {
+                error('Something went wrong...');
+              }
+            };
+
+            request.send(formData);
+
+            return {
+              abort: () => {
+                request.abort();
+                abort();
+              }
+            };
+          },
+          revert: (uniqueFileId, load, error) => {
+            console.log(uniqueFileId)
+            const request = new XMLHttpRequest();
+            request.open("DELETE","./delete")
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 300) {
+                    load();
+                }
+                else {
+                    error('oh no');
+                }
+            };
+            const formData = new FormData();
+            formData.append("key",uniqueFileId);
+            request.send(formData)
+          }
+        }
+      })
+      $('.upload').on("FilePond:processfile", (e) => {
+        //* u
+      })
+    })
+  </script>
+</body>
+
 </html>

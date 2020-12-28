@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www --ignore files/*",
     "test": "node ./bin/www &"
   },
   "dependencies": {
@@ -14,5 +14,10 @@
     "express-fileupload": "^1.2.0",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "files/*"
+    ]
   }
 }

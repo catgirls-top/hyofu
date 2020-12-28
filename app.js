@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const fileupload = require("express-fileupload")
 
+
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
 
@@ -35,7 +36,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  console.log(err)
   res.render('error');
 });
+
 
 module.exports = app;
