@@ -73,7 +73,8 @@ router.post('/upload', (req, res) => {
         res.status(200).send({
           "url": `${req.hostname}/${config.uploadFolder}/${name}.${ext}`,
           "id": name,
-          "delete": `${name}.${ext}?key=${key}`
+          "delete": `${name}.${ext}?key=${key}`,
+          "deleteURL": `${req.hostname}/delete/${name}.${ext}?key=${key}`
         })
       })
     }

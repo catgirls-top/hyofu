@@ -36,6 +36,9 @@
       </div>
     </center>
   </form>
+  <div class="links">
+
+  </div>
   <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
   <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -62,6 +65,7 @@
             request.onload = function () {
               if (request.status >= 200 && request.status < 300) {
                 console.log(JSON.parse(request.responseText)["delete"])
+                ShowLinks(JSON.parse(request.responseText))
                 load(JSON.parse(request.responseText)["delete"]);
               } else {
                 error('Something went wrong...');
@@ -95,9 +99,12 @@
           }
         }
       })
-      $('.upload').on("FilePond:processfile", (e) => {
-        //* u
-      })
+      let i = 1
+      function ShowLinks(obj){
+        let old = $(".links").html()
+        $(".links").html(`${old}<br>\n<b>File #${i}</b><br>\nDirect link: <a href="${obj.url}">${obj.url}</a><br>\nDeletion URL: <a href="${obj.deleteURL}">${obj.deleteURL}</a>`)
+        i++
+      }
     })
   </script>
 </body>
