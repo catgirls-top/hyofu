@@ -7,5 +7,8 @@
         "allowRatelimits":true,
         "ratelimit":1000,
         "usingCloudflare":false
+    },
+    "api":{
+        "enabled":true
     }
 }
