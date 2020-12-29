@@ -2,11 +2,11 @@
 ## With HYOFU, you can create your own file-hosting service quickly and easily!
 
 ## Installation
+Windows
 ```
 git clone https://github.com/catgirls-top/hyofu.git
 cd hyofu
-npm install
-npm start
+.\start.bat
 ```
 
 ## More info
