@@ -74,7 +74,7 @@ router.post('/upload', (req, res) => {
           "url": `${req.hostname}/${config.uploadFolder}/${name}.${ext}`,
           "id": name,
           "delete": `${name}.${ext}?key=${key}`,
-          "deleteURL": `${req.hostname}/delete/${name}.${ext}?key=${key}`
+          "deleteURL": `${req.hostname}/delete/?file=${name}.${ext}&key=${key}`
         })
       })
     }
@@ -99,7 +99,7 @@ router.delete("/delete", (req, res) => {
       }
     })
   } else {
-    let filename = req.baseUrl.replace("/", "")
+    let filename = req.query.file
     let key = req.query.key
     let files = JSON.parse(data)
     if (key == files[filename]) {
