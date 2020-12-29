@@ -71,10 +71,11 @@ router.post('/upload', (req, res) => {
           fs.writeFileSync("./files/uploaded_files.json", JSON.stringify(someObj))
         })
         res.status(200).send({
-          "url": `${req.hostname}/${config.uploadFolder}/${name}.${ext}`,
+          "url": `/${config.uploadFolder}/${name}.${ext}`,
           "id": name,
+          "fname": `${name}.${ext}`,
           "delete": `${name}.${ext}?key=${key}`,
-          "deleteURL": `${req.hostname}/delete/${name}.${ext}?key=${key}`
+          "deleteURL": `/delete?file=${name}.${ext}&key=${key}`
         })
       })
     }
@@ -99,7 +100,8 @@ router.delete("/delete", (req, res) => {
       }
     })
   } else {
-    let filename = req.baseUrl.replace("/", "")
+    fs.readFile("./files/uploaded_files.json", 'utf8', (err, data) => {
+    let filename = req.query.file
     let key = req.query.key
     let files = JSON.parse(data)
     if (key == files[filename]) {
@@ -109,7 +111,8 @@ router.delete("/delete", (req, res) => {
     } else {
       res.status(401).send("Wrong delete key")
     }
-  }
+    })
+    }
 })
 
 module.exports = router;

@@ -24,6 +24,22 @@
   .title {
     font-size: 20px;
   }
+  .button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .button:hover{
+    background-color: #E23D28;
+  }
 </style>
 
 <body>
@@ -102,7 +118,13 @@
       let i = 1
       function ShowLinks(obj){
         let old = $(".links").html()
-        $(".links").html(`${old}<br>\n<b>File #${i}</b><br>\nDirect link: <a href="${obj.url}">${obj.url}</a><br>\nDeletion URL: <a href="${obj.deleteURL}">${obj.deleteURL}</a>`)
+        $(".links").html(`<body>
+${old}<br>\\n<b>File #${i}</b>
+<br>\\nDirect link: <a href="${obj.url}">${obj.fname}</a>
+<br>
+<form action="${obj.deleteURL}&_method=DELETE" method="post">
+    <button class="button" type="submit"><i class="fas fa-trash"></i> Delete</button>
+</form>`)
         i++
       }
     })
