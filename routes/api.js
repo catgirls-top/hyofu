@@ -80,7 +80,8 @@ router.post('/upload', (req, res) => {
           "id": name,
           "fname": `${name}.${ext}`,
           "delete": `${name}.${ext}?key=${key}`,
-          "deleteURL": `/delete?file=${name}.${ext}&key=${key}`
+          "deleteURL": `/delete?file=${name}.${ext}&key=${key}`,
+          "oldname" : `${req.files.file.name}`
         })
       })
     }

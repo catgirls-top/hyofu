@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <link rel="icon" type="image/png" href="images/logo.png" />
 </head>
 <style>
@@ -42,6 +43,22 @@
   .button:hover {
     background-color: #E23D28;
   }
+
+  .card{
+    background-color: #f1f0ef;
+    color: #4f4f4f;
+    width: 50%;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 47.8%;
+  }
+  .card a{
+    color: #147eff;
+  }
+  .done{
+    color: #54CF5A;
+    font-size: 20px;
+  }
 </style>
 
 <body>
@@ -50,13 +67,15 @@
   <form action="/upload" method="post" encType="multipart/form-data">
     <center>
       <div style="width: 50%;">
-        <input type="file" name="file" class="upload">
+        <input type="file" name="file" class="upload" <%= (multi) ? "multiple"  : ""; %>>
       </div>
     </center>
   </form>
+  <center>
   <div class="links">
 
   </div>
+  </center>
   <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
   <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
@@ -120,11 +139,15 @@
 
       function ShowLinks(obj) {
         let old = $(".links").html()
-        $(".links").html(`<body>
-${old}<br>\n<br><b>File #${i}</b>
-<br>\n<br>Direct link: <a href="${obj.url}">${obj.fname}</a>
+        $(".links").html(`${old}
+<br>    <div class="card">
+        <span class="done"><i class="fas fa-check"></i> File uploaded</span>
+<br><b>${obj.oldname}</b>
+<br>Direct link: <a href="${obj.url}" target="_blank">${obj.fname}</a>
 <br>
-<b>Deletion URL:</b> <a href="${obj.deleteURL}">${obj.deleteURL}</a>`)
+Deletion URL: <a href="${obj.deleteURL}" target="_blank">${obj.deleteURL}</a>
+</div>
+<br>`)
         i++
       }
     })
