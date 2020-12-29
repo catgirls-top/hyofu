@@ -19,7 +19,7 @@ router.post('/upload', (req, res) => {
     if (req.files.file.size > config.maxfilesize && config.maxfilesize !== -1) {
       return res.status(413).send("too big")
     } else {
-      if (!fs.existsSync("./public/" + config.uploadFolder)) fs.mkdirSync(uploadFolder);
+      if (!fs.existsSync("./public/" + config.uploadFolder)) fs.mkdirSync("./public/" + config.uploadFolder);
       let ext = req.files.file.name.split('.').pop();
       let blockUpload = false
       if (config.blockedExtensions !== undefined) {
