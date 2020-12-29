@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>hyofu</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+<style>
+    body {
+        text-align: center;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .logo {
+        height: 10%;
+        width: 10%;
+        cursor: default;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .button {
+        background-color: red;
+        border: none;
+        color: white;
+        padding: 10px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: #E23D28;
+    }
+</style>
+
+<body>
+    <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const file = urlParams.get('file');
+        const key = urlParams.get('key')
+        if (file !== undefined && key !== undefined) {
+            check(file, key)
+        }
+
+        async function check(file, key) {
+
+            await Swal.fire({
+                title: 'Seriously delete ' + file + "?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    var request = new XMLHttpRequest()
+                    request.open("DELETE", `http://<%= url %>/api/delete?file=${file}&key=${key}`)
+                    console.log(`http://<%= url %>/api/delete?file=${file}&key=${key}`)
+                    request.onload = () => {
+                        let o
+                        let res
+                        console.log(request.status)
+                        if (request.status >= 200 && request.status < 300) {
+                            o = true
+                            done(o,res)
+                        } else if (request.status == 404) {
+                            o = false
+                            res = "File not found"
+                            done(o,res)
+
+                        } else if (request.status == 401) {
+                            o = false
+                            done(o,res)
+                            res = "Wrong key"
+                        } else {
+                            o = false
+                            done(o,res)
+                            res = request.response
+                        }
+                    }
+                    request.send()
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+
+            function done(o,res) {
+                if (o) {
+                    Swal.fire({
+                        title: "File deleted!",
+                        icon: "success"
+                    }).then(()=>{
+                        window.location.replace("/")
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        icon: "error",
+                        text: res
+                    })
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

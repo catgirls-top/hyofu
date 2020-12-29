@@ -24,6 +24,7 @@
   .title {
     font-size: 20px;
   }
+
   .button {
     background-color: red;
     border: none;
@@ -37,7 +38,8 @@
     outline: none;
     cursor: pointer;
   }
-  .button:hover{
+
+  .button:hover {
     background-color: #E23D28;
   }
 </style>
@@ -45,7 +47,7 @@
 <body>
   <a href="#"><img class="logo" src="/images/logo.png"></a><br>
   <span class="title">Hyofu file upload</span><br><br>
-  <form action="/upload" method="post" encType="multipart/form-data" class="dropzone">
+  <form action="/upload" method="post" encType="multipart/form-data">
     <center>
       <div style="width: 50%;">
         <input type="file" name="file" class="upload">
@@ -72,7 +74,7 @@
             formData.append(fieldName, file, file.name);
 
             const request = new XMLHttpRequest();
-            request.open('POST', './upload');
+            request.open('POST', './api/upload');
 
             request.upload.onprogress = (e) => {
               progress(e.lengthComptable, e.loaded, e.total);
@@ -100,31 +102,29 @@
           revert: (uniqueFileId, load, error) => {
             console.log(uniqueFileId)
             const request = new XMLHttpRequest();
-            request.open("DELETE","./delete")
-            request.onload = function() {
-                if (request.status >= 200 && request.status < 300) {
-                    load();
-                }
-                else {
-                    error('oh no');
-                }
+            request.open("DELETE", "./api/delete")
+            request.onload = function () {
+              if (request.status >= 200 && request.status < 300) {
+                load();
+              } else {
+                error('oh no');
+              }
             };
             const formData = new FormData();
-            formData.append("key",uniqueFileId);
+            formData.append("key", uniqueFileId);
             request.send(formData)
           }
         }
       })
       let i = 1
-      function ShowLinks(obj){
+
+      function ShowLinks(obj) {
         let old = $(".links").html()
         $(".links").html(`<body>
-${old}<br>\\n<b>File #${i}</b>
-<br>\\nDirect link: <a href="${obj.url}">${obj.fname}</a>
+${old}<br>\n<br><b>File #${i}</b>
+<br>\n<br>Direct link: <a href="${obj.url}">${obj.fname}</a>
 <br>
-<form action="${obj.deleteURL}&_method=DELETE" method="post">
-    <button class="button" type="submit"><i class="fas fa-trash"></i> Delete</button>
-</form>`)
+<b>Deletion URL:</b> <a href="${obj.deleteURL}">${obj.deleteURL}</a>`)
         i++
       }
     })
