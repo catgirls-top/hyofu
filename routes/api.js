@@ -5,12 +5,14 @@ const fs = require("fs")
 const os = require("os")
 const path = require("path")
 
-const enableCheck = (req,res,next)=>{
-  if(!config.api.enabled) res.status(404).json({error:"Not found"})
+const enableCheck = (req, res, next) => {
+  if (!config.api.enabled) res.status(404).json({
+    error: "Not found"
+  })
   else next()
 }
 
-router.get('/',enableCheck, function(req, res) {
+router.get('/', enableCheck, function (req, res) {
   res.send('respond with a resource');
 });
 
@@ -81,7 +83,7 @@ router.post('/upload', (req, res) => {
           "fname": `${name}.${ext}`,
           "delete": `${name}.${ext}?key=${key}`,
           "deleteURL": `/delete?file=${name}.${ext}&key=${key}`,
-          "oldname" : `${req.files.file.name}`
+          "oldname": `${req.files.file.name}`
         })
       })
     }
@@ -95,7 +97,7 @@ router.delete("/delete", (req, res) => {
       let filename = req.body.key.split("?")[0]
       let key = req.body.key.split("?")[1].replace("key=", "")
       let files = JSON.parse(data)
-      if(!fs.existsSync(`./public/${config.uploadFolder}/${filename}`))return res.status(404).send("No file found with that name")
+      if (!fs.existsSync(`./public/${config.uploadFolder}/${filename}`)) return res.status(404).send("No file found with that name")
       if (key == files[filename]) {
         fs.unlinkSync(`./public/${config.uploadFolder}/${filename}`)
         delete files[filename]
@@ -110,7 +112,7 @@ router.delete("/delete", (req, res) => {
       let filename = req.query.file
       let key = req.query.key
       let files = JSON.parse(data)
-      if(!fs.existsSync(`./public/${config.uploadFolder}/${filename}`))return res.status(404).send("No file found with that name")
+      if (!fs.existsSync(`./public/${config.uploadFolder}/${filename}`)) return res.status(404).send("No file found with that name")
       if (key == files[filename]) {
         fs.unlinkSync(`./public/${config.uploadFolder}/${filename}`)
         delete files[filename]

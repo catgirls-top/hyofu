@@ -9,7 +9,6 @@ router.get('/', function (req, res) {
 });
 
 router.get("/delete",(req,res)=>{
-  
   res.render("delete",{url:req.hostname})
 })
 

@@ -44,7 +44,7 @@
     background-color: #E23D28;
   }
 
-  .card{
+  .card {
     background-color: #f1f0ef;
     color: #4f4f4f;
     width: 50%;
@@ -52,10 +52,12 @@
     padding: 10px 20px;
     width: 47.5%;
   }
-  .card a{
+
+  .card a {
     color: #147eff;
   }
-  .done{
+
+  .done {
     color: #54CF5A;
     font-size: 20px;
   }
@@ -72,9 +74,9 @@
     </center>
   </form>
   <center>
-  <div class="links">
+    <div class="links">
 
-  </div>
+    </div>
   </center>
   <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
@@ -101,7 +103,6 @@
 
             request.onload = function () {
               if (request.status >= 200 && request.status < 300) {
-                console.log(JSON.parse(request.responseText)["delete"])
                 ShowLinks(JSON.parse(request.responseText))
                 load(JSON.parse(request.responseText)["delete"]);
               } else {
@@ -119,11 +120,13 @@
             };
           },
           revert: (uniqueFileId, load, error) => {
-            console.log(uniqueFileId)
             const request = new XMLHttpRequest();
             request.open("DELETE", "./api/delete")
             request.onload = function () {
               if (request.status >= 200 && request.status < 300) {
+                let that = `#${uniqueFileId.split("?")[0].split(".")[0]}`
+                console.log(that)
+                $(that).remove()
                 load();
               } else {
                 error('oh no');
@@ -140,7 +143,7 @@
       function ShowLinks(obj) {
         let old = $(".links").html()
         $(".links").html(`${old}
-<br>    <div class="card">
+<br>    <div class="card" id="${obj.delete.split("?")[0].split(".")[0]}">
         <span class="done"><i class="fas fa-check"></i> File uploaded</span>
 <br><b>${obj.oldname}</b>
 <br>Direct link: <a href="${obj.url}" target="_blank">${obj.fname}</a>
