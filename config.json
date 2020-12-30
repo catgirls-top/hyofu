@@ -1,4 +1,5 @@
 {
+    "site_name":"Hyofu File Upload",
     "port":80,
     "maxfilesize":-1,
     "uploadFolder":"upload",

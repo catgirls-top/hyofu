@@ -4,7 +4,8 @@ var config = require(`../config.json`)
 
 router.get('/', function (req, res) {
   res.render('index',{
-    multi:config.multipleFileUpload
+    multi:config.multipleFileUpload,
+    sitename:config.site_name
   });
 });
 
