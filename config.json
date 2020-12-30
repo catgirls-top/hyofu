@@ -6,8 +6,8 @@
     "blockedExtensions":"exe,js,dmg",
     "multipleFileUpload": true,
     "ratelimit":{
-        "allowRatelimits":true,
-        "ratelimit":1000,
+        "ratelimitAfter":5,
+        "ratelimit":5000,
         "usingCloudflare":false
     },
     "api":{

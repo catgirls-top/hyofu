@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 const config = require("../config.json")
 const fs = require("fs")
-const os = require("os")
-const path = require("path")
+
+let ratelimitTemp = {}
 
 const enableCheck = (req, res, next) => {
   if (!config.api.enabled) res.status(404).json({
@@ -22,7 +22,8 @@ router.post('/upload', (req, res) => {
     if (err) return res.status(500).send(err)
     ratelimits = JSON.parse(data)
     if (!req.files) return res.status(400).send("No file")
-    if ((config.ratelimit.usingCloudflare) ? ratelimits[req.headers["cf-connecting-ip"]] == true : ratelimits[req.ip] == true) return res.status(403).set("RateLimit-Limit", `1r/${config.ratelimit.ratelimit}ms`).send("You are being rate-limited")
+    console.log(ratelimits[req.headers["cf-connecting-ip"]])
+    if ((config.ratelimit.usingCloudflare) ? ratelimits[req.headers["cf-connecting-ip"]] !== undefined && ratelimits[req.headers["cf-connecting-ip"]].ratelimited == true : ratelimits[req.ip] !== undefined && ratelimits[req.ip].ratelimited == true) return res.status(403).set("RateLimit-Limit", `${config.ratelimit.ratelimitAfter} requests/${config.ratelimit.ratelimit}ms`).send("You are being rate-limited")
     if (req.files.file.size > config.maxfilesize && config.maxfilesize !== -1) {
       return res.status(413).send("too big")
     } else {
@@ -51,12 +52,56 @@ router.post('/upload', (req, res) => {
           return res.status(500).send(err)
         }
 
-        if (config.ratelimit.allowRatelimits) {
-          let newObj = ratelimits;
-          if (config.ratelimit.usingCloudflare) newObj[req.headers["cf-connecting-ip"]] = true
-          else newObj[req.ip] = true
-          fs.writeFileSync("./files/ratelimits.json", JSON.stringify(newObj))
-          setTimeout(function () {
+        //* RATELIMIT
+        if (config.ratelimit.ratelimit !== -1) {
+          let newObj
+          //* if using cloudflare
+          if (config.ratelimit.usingCloudflare) {
+            //* if no entry in ratelimits DB, create on
+            if (!ratelimits[req.headers["cf-connecting-ip"]]) {
+              newObj = ratelimits;
+              newObj[req.headers["cf-connecting-ip"]] = {ratelimited:false,requests:1}
+            }
+            //* if entry has timeout, clear it
+            if(ratelimitTemp[req.headers["cf-connecting-ip"]] !== undefined){
+              clearTimeout(ratelimits[req.headers["cf-connecting-ip"]].timeout)
+            }
+            //* if number of requests is equal to set ratelimit after, set as ratelimit
+            if(ratelimits[req.headers["cf-connecting-ip"]].requests==config.ratelimit.ratelimitAfter){
+              newObj = ratelimits;
+              newObj[req.headers["cf-connecting-ip"]] = {ratelimited:true,requests:0}
+            }
+            //* else just add one request
+            else{
+              newObj = ratelimits;
+              newObj[req.headers["cf-connecting-ip"]] = {ratelimited:false,requests:ratelimits[req.headers["cf-connecting-ip"]].requests+1}
+            }
+          }
+          //* else do the same but with req.ip
+          else{
+            //* if no entry in ratelimits DB, create on
+            newObj = ratelimits;
+            if (!ratelimits[req.ip]) {
+              newObj[req.ip] = {ratelimited:false,requests:1}
+            }
+            //* if entry has timeout, clear it
+            if(ratelimitTemp[req.ip] !== undefined){
+              clearTimeout(ratelimits[req.ip].timeout)
+            }
+            //* if number of requests is equal to set ratelimit after, set as ratelimit
+            if(ratelimits[req.ip].requests==config.ratelimit.ratelimitAfter){
+              newObj = ratelimits;
+              newObj[req.ip] = {ratelimited:true,requests:1}
+            }
+            //* else just add one request
+            else{
+              newObj = ratelimits;
+              newObj[req.ip] = {ratelimited:false,requests:ratelimits[req.ip].requests+1}
+            }
+          }
+          //* add timeout so we can clear it later
+          ratelimitTemp[(config.ratelimit.usingCloudflare)?req.headers["cf-connecting-ip"]:req.ip] = {}
+          ratelimitTemp[(config.ratelimit.usingCloudflare)?req.headers["cf-connecting-ip"]:req.ip].timeout = setTimeout(function () {
             fs.readFile("./files/ratelimits.json", 'utf8', (err, data) => {
               let r = JSON.parse(data)
               if (config.ratelimit.usingCloudflare) delete r[req.headers["cf-connecting-ip"]]
@@ -64,6 +109,8 @@ router.post('/upload', (req, res) => {
               fs.writeFileSync("./files/ratelimits.json", JSON.stringify(r))
             })
           }, parseInt(config.ratelimit.ratelimit))
+          //* write to file
+          fs.writeFileSync("./files/ratelimits.json", JSON.stringify(newObj))
         }
 
         var key = '';
