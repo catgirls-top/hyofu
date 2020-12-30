@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>hyofu</title>
+  <title><%= sitename %></title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
@@ -65,7 +65,7 @@
 
 <body>
   <a href="#"><img class="logo" src="/images/logo.png"></a><br>
-  <span class="title">Hyofu file upload</span><br><br>
+  <span class="title"><%= sitename %></span><br><br>
   <form action="/upload" method="post" encType="multipart/form-data">
     <center>
       <div style="width: 50%;">
