@@ -4,7 +4,7 @@
     "maxfilesize":-1,
     "uploadFolder":"upload",
     "blockedExtensions":"exe,js,dmg",
-	"multipleFileUpload": true,
+    "multipleFileUpload": true,
     "ratelimit":{
         "allowRatelimits":true,
         "ratelimit":1000,
