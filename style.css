@@ -1,0 +1,33 @@
+html,body{
+    width:100%;
+    text-align: center;
+}
+h1{
+    color:white;
+    animation: fadeInDown; 
+    animation-duration: 1s;
+    font-size: 70px;
+    font-weight: bold;
+}
+h2{
+    color:white;
+    animation: fadeInDown; 
+    animation-duration: 1s;
+    animation-delay: 0.1s;
+    font-size: 40px;
+}
+
+img{
+    width: 50%;
+    border-radius: 5px;
+    animation: fadeInDown; 
+    animation-duration: 1s;
+    animation-delay: 0.1s;
+}
+button{
+    font-size: 20px !important;
+    border-color: rgb(22, 22, 22) !important;
+}
+div{
+    margin-top: 10px;
+}
