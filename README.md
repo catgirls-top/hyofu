@@ -6,13 +6,15 @@
 
 
 ## Installation
+### Should run smoothly on Windows and Linux
+Requires NodeJS (recommend LTS version) and npm
 Windows
 ```
 git clone https://github.com/catgirls-top/hyofu.git
 cd hyofu
 .\start.bat
 ```
-######  (`start script` shamelessly stolen from [vlc-discord-rpc](https://github.com/Pigpog/vlc-discord-rpc))
+######  (start script shamelessly stolen from [vlc-discord-rpc](https://github.com/Pigpog/vlc-discord-rpc))
 
 ## Special thanks
 Thanks to [PQINA](https://pqina.nl/filepond/docs/) for their awesome drag'n'drop file upload!
