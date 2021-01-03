@@ -13,8 +13,6 @@ router.get("/delete",(req,res)=>{
   res.render("delete",{url:req.hostname})
 })
 
-router.get(`/*`,(req,res)=>{
-  res.status(404).render("404")
-})
+
 
 module.exports = router;

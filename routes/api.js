@@ -16,13 +16,59 @@ router.get('/', enableCheck, function (req, res) {
   res.send('respond with a resource');
 });
 
+router.get("/fetch", async (req,res) => {
+  if(!req.query.url){
+    return res.status(404).render("404")
+  }
+  require(`axios`)({
+    url:req.query.url,
+    method:"GET",
+    responseType:"stream"
+  }).then(async (response)=>{
+    var fname = '';
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
+    for (var i = 0; i < 8; i++) {
+      fname += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    let data;
+    let done = false;
+    const stream = fs.createWriteStream("./temp/"+fname);
+    response.data.pipe(stream)
+   const interval = setInterval(async function(){
+     if(done){
+       clearInterval(interval)
+     }
+     if (stream.bytesWritten > config.maxfilesize && config.maxfilesize !== -1) {
+       if(await fs.existsSync("./temp/"+fname)){
+         fs.unlinkSync("./temp/"+fname)
+       }
+       stream.end();
+     }
+    },1000)
+    stream.on("finish", async ()=>{
+      done = true
+      if (stream.bytesWritten > config.maxfilesize && config.maxfilesize !== -1) {
+        fs.unlinkSync("./temp/"+fname)
+        return res.status(413).send("")
+      }
+      data = await fs.readFileSync("./temp/"+fname)
+     await res.send(data)
+      fs.unlinkSync("./temp/"+fname)
+    })
+
+
+  }).catch((err)=>{
+    res.status(500).send("")
+  })
+
+});
+
 router.post('/upload', (req, res) => {
   let ratelimits
   fs.readFile("./files/ratelimits.json", 'utf8', (err, data) => {
     if (err) return res.status(500).send(err)
     ratelimits = JSON.parse(data)
     if (!req.files) return res.status(400).send("No file")
-    console.log(ratelimits[req.headers["cf-connecting-ip"]])
     if ((config.ratelimit.usingCloudflare) ? ratelimits[req.headers["cf-connecting-ip"]] !== undefined && ratelimits[req.headers["cf-connecting-ip"]].ratelimited == true : ratelimits[req.ip] !== undefined && ratelimits[req.ip].ratelimited == true) return res.status(403).set("RateLimit-Limit", `${config.ratelimit.ratelimitAfter} requests/${config.ratelimit.ratelimit}ms`).send("You are being rate-limited")
     if (req.files.file.size > config.maxfilesize && config.maxfilesize !== -1) {
       return res.status(413).send("too big")
