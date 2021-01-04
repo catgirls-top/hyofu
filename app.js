@@ -29,6 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/api', apiRouter);
+const fs = require("fs")
+if(!fs.existsSync("./temp/")){
+  fs.mkdirSync("./temp/")
+}
 
 app.get(`/*`,(req,res)=>{
   res.status(404).render("404")
