@@ -20,16 +20,6 @@ router.get("/fetch", async (req,res) => {
   if(!req.query.url){
     return res.status(404).render("404")
   }
-  let test;
-  if(req.query.url.includes("https://")){
-    test = req.query.url.replace("https://","")
-  } else {
-    test = req.query.url.replace("http://","")
-  }
-  if(test.startsWith(req.hostname)){
-    return res.status(403).send("")
-  }
-  console.log(test)
   require(`axios`)({
     url:req.query.url,
     method:"GET",
