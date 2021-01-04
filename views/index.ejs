@@ -183,6 +183,15 @@ a{
         if(!x.includes("https://") && !x.includes("http://")){
           x = "https://" + x
         }
+        let test;
+        if(x.includes("https://")){
+          test = x.replace("https://","")
+        } else {
+          test = x.replace("http://","")
+        }
+        if(test.startsWith(location.hostname)){
+          return;
+        }
         if(x){
           $(".upload").first().filepond('addFile', x)
         }
