@@ -9,7 +9,8 @@
 ### Should run smoothly on Windows and Linux
 Requires NodeJS (recommend LTS version) and npm
 Windows
-```
+```sh
+# downloads latest code, if you want "stable" code, download source from releases
 git clone https://github.com/catgirls-top/hyofu.git
 cd hyofu
 .\start.bat
