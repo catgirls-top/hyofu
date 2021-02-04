@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= sitename %></title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+<style>
+  body {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .logo {
+    height: 10%;
+    width: 10%;
+    cursor: default;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: #E23D28;
+  }
+
+  .card {
+    background-color: #f1f0ef;
+    color: #4f4f4f;
+    width: 50%;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 47.5%;
+  }
+
+  .card a {
+    color: #147eff;
+  }
+
+  .done {
+    color: #54CF5A;
+    font-size: 20px;
+  }
+
+  footer{
+  font-size: 10px !important;
+  color:rgb(184, 184, 184);
+}
+a{
+  text-decoration: none;
+}
+.filepond--label-action{
+  outline: none;
+}
+#url{
+  width: 20%;
+  padding: 5px 5px;
+  box-sizing: border-box;
+  margin-bottom: 3px;
+  outline: none;
+  border:2px solid gray;
+  border-radius: 3px;
+}
+#submit{
+  background-color: #00B7FF;
+  border: none;
+  color: white;
+  padding: 7px 32px;
+  text-decoration: none;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+</style>
+
+<body>
+  <a href="#"><img class="logo" src="/images/logo.png"></a><br>
+  <span class="title"><%= sitename %></span><br><br>
+  <center>
+  <form action="/admin/login" method="post" encType="multipart/form-data">
+      <div style="width: 50%;">
+        <input type="text" name="user">
+        <input type="password" name="pass">
+        <button type="submit">Login</button>
+      </div>
+  </form>
+  </center>
+  <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

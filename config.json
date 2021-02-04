@@ -1,16 +1,21 @@
 {
-    "site_name":"Hyofu File Upload",
-    "port":80,
-    "maxfilesize":-1,
-    "uploadFolder":"upload",
-    "blockedExtensions":"exe,js,dmg",
+    "// COMMENT": "MAKE SURE THIS FILE CAN ONLY BE EDITED BY OWNER/GROUP (chmod 770)",
+    "site_name": "Hyofu File Upload",
+    "port": 80,
+    "maxfilesize": -1,
+    "uploadFolder": "upload",
+    "blockedExtensions": "exe,js,dmg",
     "multipleFileUpload": true,
-    "ratelimit":{
-        "ratelimitAfter":5,
-        "ratelimit":5000,
-        "usingCloudflare":false
+    "ratelimit": {
+        "ratelimitAfter": 5,
+        "ratelimit": 5000,
+        "usingCloudflare": false
     },
-    "api":{
-        "enabled":true
+    "api": {
+        "enabled": true
+    },
+    "admin": {
+        "user": "admin",
+        "pass": "$2b$08$hoHud6H.UcCNmpeq7lvjQ.ufXkos0amaWs8/SvYT2p5YvEFwu/.ly"
     }
 }
