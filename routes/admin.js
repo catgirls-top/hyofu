@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
+var config = require(`../config.json`)
 /* GET users listing. */
 router.get('/', function (req, res) {
-  res.send('respond with a resource');
+  res.render("admin",{sitename:config.site_name});
 });
 
 router.post('/login', (req, res) => {
