@@ -19,7 +19,7 @@
     "http-errors": "~1.6.3",
     "memorystore": "^1.6.4",
     "method-override": "^3.0.0",
-    "morgan": "~1.9.1",
+    "morgan": "~1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "readline-sync": "^1.4.10"
