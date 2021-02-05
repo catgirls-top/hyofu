@@ -16,6 +16,7 @@
     },
     "admin": {
         "user": "admin",
-        "pass": "$2b$08$hoHud6H.UcCNmpeq7lvjQ.ufXkos0amaWs8/SvYT2p5YvEFwu/.ly"
+        "pass": "$2b$08$hoHud6H.UcCNmpeq7lvjQ.ufXkos0amaWs8/SvYT2p5YvEFwu/.ly",
+        "secret":"PLEASE_CHANGE_THIS_TO_A_RANDOM_STRING"
     }
 }

@@ -1,12 +1,85 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.logo {
+  height: 10%;
+  width: 10%;
+  cursor: default;
+}
+
+.title {
+  font-size: 20px;
+}
+
+.button {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #E23D28;
+}
+
+.card {
+  background-color: #f1f0ef;
+  color: #4f4f4f;
+  width: 50%;
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: 47.5%;
+}
+
+.card a {
+  color: #147eff;
+}
+
+.done {
+  color: #54CF5A;
+  font-size: 20px;
+}
+
+footer {
+  font-size: 10px !important;
+  color: rgb(184, 184, 184);
 }
 
 a {
-  color: #00B7FF;
-}
-.links{
-  width: 60%;
+  text-decoration: none;
 }
 
+.filepond--label-action {
+  outline: none;
+}
+
+input {
+  width: 20%;
+  padding: 5px 5px;
+  box-sizing: border-box;
+  margin-bottom: 3px;
+  outline: none;
+  border: 2px solid gray;
+  border-radius: 3px;
+}
+
+#submit {
+  background-color: #00B7FF;
+  border: none;
+  color: white;
+  padding: 7px 32px;
+  text-decoration: none;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 4px;
+}

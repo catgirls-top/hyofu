@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= sitename %></title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+
+
+<body>
+  <a href="#"><img class="logo" src="/images/logo.png"></a><br>
+  <span class="title"><%= sitename %></span><br><br>
+  <% if(messages.error){ %>
+    <div id="errorbox">
+        <h1 class="error">
+            <%= messages.error %>
+        </h1>
+    </div>
+<% } %>
+  <center>
+  <form action="/admin/login" method="post" encType="multipart/form-data">
+      <div style="width: 50%;">
+        <input type="text" name="user" placeholder="Username"><br>
+        <input type="password" name="pass" placeholder="Password"><br>
+        <button type="submit" id="submit">Login</button>
+      </div>
+  </form>
+  </center>
+  <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
