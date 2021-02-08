@@ -15,8 +15,7 @@ function init(passport) {
     });
 
     passport.deserializeUser(async (id, done) => {
-        done(id)
-
+        done(null,id)
     });
 }
 

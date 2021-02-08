@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 router.post('/login', passport.authenticate("local", {
   failureRedirect: "/admin",
   failureFlash: true,
-  successRedirect: "/users/profile"
+  successRedirect: "/"
 }))
 
 module.exports = router;
