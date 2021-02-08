@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
-    "ejs": "~3.1.5",
+    "ejs": "~3.1.6",
     "express": "~4.17.1",
     "express-fileupload": "^1.2.1",
     "express-flash": "^0.0.2",
