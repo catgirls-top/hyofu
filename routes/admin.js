@@ -16,4 +16,11 @@ router.post('/login', passport.authenticate("local", {
   successRedirect: "/"
 }))
 
+router.get("/panel",(req,res)=>{
+  if(!req.isAuthenticated()){
+   return res.redirect("/admin")
+  }
+  res.render("adminpanel",{sitename:config.site_name})
+})
+
 module.exports = router;
